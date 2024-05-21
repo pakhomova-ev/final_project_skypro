@@ -11,6 +11,7 @@
 - pytest
 - selenium
 - requests
+- _sqlalchemy_
 - allure
 - config
 
