@@ -1,17 +1,30 @@
+import allure 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
 
+from configuration.ConfigProvider import ConfigProvider
+
 class AuthPage:
     def __init__(self, driver: WebDriver) -> None:
-        self.__url = "https://id.atlassian.com/login"
         self.__driver = driver
+        self.url = ConfigProvider().get("ui", "base_url")
+        self.__url = self.url + "/login"
+        
 
+    @allure.step("Перейти на страницу авторизации")
     def go(self):
+        """
+        Метод открывает страницу авторизации пользователя Trello
+        """
         self.__driver.get(self.__url)
 
-    def login_as(self, email: str, password: str):
+    @allure.step("Авторизоваться под {email} : {password}")
+    def login_as(self, email: str, password: str) -> None:
+        """
+        Метод проходит по шагам для авторизации зарегистрированного пользователя
+        """
         self.__driver.find_element(By.CSS_SELECTOR, "#username").send_keys(email)
         self.__driver.find_element(By.CSS_SELECTOR, "#login-submit").click()
 
@@ -20,5 +33,8 @@ class AuthPage:
         self.__driver.find_element(By.CSS_SELECTOR, "#password").send_keys(password)
         self.__driver.find_element(By.CSS_SELECTOR, "#login-submit").click()
 
-    def get_current_url(self):
+    def get_current_url(self) -> str:
+        """
+        Метод возвращает адрес стекущей страницы
+        """
         return self.__driver.current_url
