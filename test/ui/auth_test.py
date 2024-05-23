@@ -4,11 +4,11 @@ from page.AuthPage import AuthPage
 from page.MainPage import MainPage
 
 
-email = "final_01@qa.team"
-password = "WrTC@fX2J4r8ZKj"
-username = "Elena"
-
-def auth_test(browser):	
+def auth_test(browser,test_data: dict):
+    email = test_data.get("email")
+    password = test_data.get("password")
+    username = test_data.get("username")
+    
     auth_page = AuthPage(browser)
     auth_page.go()
     auth_page.login_as(email, password)

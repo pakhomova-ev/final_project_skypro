@@ -8,6 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from configuration.ConfigProvider import ConfigProvider
 from page.BoardApi import BoardApi
+from testdata.DataProvider import DataProvider
 
 @pytest.fixture
 def browser():
@@ -23,5 +24,11 @@ def browser():
 
 @pytest.fixture
 def api_client() -> BoardApi:
-    return BoardApi((ConfigProvider().get("api", "base_url")), token)
+    return BoardApi(
+        ConfigProvider().get("api", "base_url"),
+        DataProvider().get_token())
+
+@pytest.fixture
+def test_data() -> DataProvider:
+    return DataProvider()
 

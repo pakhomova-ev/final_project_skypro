@@ -11,7 +11,7 @@ class ConfigProvider:
     def get(self, section: str, prop: str):
         return self.config[section].get(prop)
 
-    def getint(self, section: str, prop: str):
+    def get_int(self, section: str, prop: str):
         return self.config[section].getint(prop)
     
     def get_ui_url(self):
