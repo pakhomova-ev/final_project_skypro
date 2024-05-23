@@ -1,75 +1,74 @@
 import allure
 from page.BoardApi import BoardApi
+from testdata.DataProvider import DataProvider
 
-name = "test_api_5"
-
-auth_dict = {
-    "key": key,
-    "token": token,
-    "filter": "open"
-}
-create_dict = {
-    "name": name,
-    "key": key,
-    "token": token
-}
 
 @allure.story("Получить список досок")
-def test_get_boards(api_client: BoardApi, test_data: dict):
-
-    resp = api_client.create_board(create_dict)
+def test_get_boards(api_client: BoardApi, test_data: DataProvider):
+    resp = api_client.create_board(test_data.get_create_creds())
     with allure.step("Получить id созданной доски"):
         id_new_board = resp.get("id")
 
-    board_list = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+    board_list = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
     with allure.step("Проверить, что возвращается не пустой список"):
         assert len(board_list) !=0
 
-@allure.story("Создать доску")
-def test_create_board(api_client: BoardApi, test_data: dict):
-    with allure.step("Получить кол-во досок до создания новой доски"):
-        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+    api_client.delete_board_by_id(id_new_board, test_data.get_auth_creds())
 
-    resp = api_client.create_board(create_dict)
+
+@allure.story("Создать доску")
+def test_create_board(api_client: BoardApi, test_data: DataProvider):
+    with allure.step("Получить кол-во досок до создания новой доски"):
+        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+
+    new_board_creds = test_data.get_create_creds()
+    name_new_board_creds = new_board_creds.get("name")
+
+    resp = api_client.create_board(new_board_creds)
+    name_new_board = resp.get("name")
+    id_new_board = resp.get("id")
+
     with allure.step("Получить кол-во досок после создания новой доски"):
-        board_list_after = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+        board_list_after = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
     with allure.step("Проверить, что досок стало на 1 больше"):
         assert len(board_list_after) - len(board_list_before) == 1
 
-@allure.story("Удалить доску")
-def test_delete_board_by_id(api_client: BoardApi, test_data: dict):
+    with allure.step('Проверить, что имя новой доски верное'):
+        assert name_new_board_creds == name_new_board
   
-    resp = api_client.create_board(create_dict)
+    api_client.delete_board_by_id(id_new_board, test_data.get_auth_creds())
+
+@allure.story("Удалить доску")
+def test_delete_board_by_id(api_client: BoardApi, test_data: DataProvider):
+  
+    new_board_creds = test_data.get_create_creds()
+    resp = api_client.create_board(new_board_creds)
     with allure.step("Получить id созданной доски"):
         id_new_board = resp.get("id")
 
     with allure.step("Получить кол-во досок до удаления доски"):
-        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
 
-    id_list = []
-    for elem in board_list_before:
-        id = elem.get("id")
-        id_list.append(id)
-    id_list 
-    id_find = False
-    for elem in id_list:
-        if(elem == id_new_board):
-            id_find = True
-        else: id_find = False
+    id_find = api_client.find_board_by_id_in_list(board_list_before, id_new_board)
     with allure.step("Проверяем, что в списке досок есть созданная доска"):
         assert id_find is True
         
-    api_client.delete_board_by_id(id_new_board, auth_dict)
+    api_client.delete_board_by_id(id_new_board, test_data.get_auth_creds())
 
     with allure.step("Получить кол-во досок после удаления доски"):
-        board_list_after = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+        board_list_after = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
     with allure.step("Проверить, что досок стало на 1 больше"):
         assert len(board_list_before) - len(board_list_after) == 1
 
+    id_find_after = api_client.find_board_by_id_in_list(board_list_after, id_new_board)
+    with allure.step("Проверяем, что в списке досок есть созданная доска"):
+        assert id_find_after is False
+
+
 @allure.story("Удалить все доски")
-def test_deleted_all_boards(api_client: BoardApi, test_data: dic):
+def test_deleted_all_boards(api_client: BoardApi, test_data: dict):
     with allure.step("Получить кол-во досок до удаления доски"):
-        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), auth_dict)
+        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
 
     id_list = []
     for elem in board_list_before:
@@ -77,6 +76,6 @@ def test_deleted_all_boards(api_client: BoardApi, test_data: dic):
         id_list.append(id)
 
     for elem in id_list:
-        api_client.delete_board_by_id(elem, auth_dict)
+        api_client.delete_board_by_id(elem, test_data.get_auth_creds())
 
 

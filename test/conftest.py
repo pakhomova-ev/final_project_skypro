@@ -14,7 +14,7 @@ from testdata.DataProvider import DataProvider
 def browser():
     with allure.step("Открыть и настроить браузер"):
         browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        browser.implicitly_wait(ConfigProvider().getint("ui", "timeout"))
+        browser.implicitly_wait(ConfigProvider().get_int("ui", "timeout"))
         browser.maximize_window()
 
         yield browser
@@ -23,10 +23,11 @@ def browser():
         browser.quit()
 
 @pytest.fixture
-def api_client() -> BoardApi:
+def api_client(scope="session") -> BoardApi:
     return BoardApi(
         ConfigProvider().get("api", "base_url"),
-        DataProvider().get_token())
+        DataProvider().get_token(), 
+        DataProvider().get_key())
 
 @pytest.fixture
 def test_data() -> DataProvider:

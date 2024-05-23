@@ -2,7 +2,7 @@ import configparser
 import json
 from faker import Faker
 
-my_file = open("test_data.json")
+my_file = open("testdata/test_data.json")
 data = json.load(my_file)
 
 class DataProvider:
@@ -24,7 +24,7 @@ class DataProvider:
         return self.data.get("key")
     
     def get_auth_creds(self) -> dict:
-        auth_creds = {}
+        auth_creds = {"key": "", "token": "", "folter": ""}
         auth_creds["key"] = self.data.get("key")
         auth_creds["token"] = self.data.get("token")
         auth_creds["filter"] = self.data.get("filter")
