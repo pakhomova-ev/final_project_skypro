@@ -1,6 +1,7 @@
 import requests 
 import allure
 
+
 class BoardApi:
     def __init__(self, base_url: str, token: str, key: str) -> None:
         self.base_url = base_url
@@ -50,4 +51,30 @@ class BoardApi:
                     id_find = True
                 else: id_find = False
             return id_find
+    
+    
+    @allure.step("Проверить есть ли доска с таким именем - {name}")
+    def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
+            name_find = False
+            for i in len(boards_list):
+                if(boards_list[i].get("name") == name):
+                    name_find = True
+                else: name_find = False
+            return name_find
+    
+    @allure.step("api.Удалить все доски организации")
+    def delete_all_board_of_org(self, org_id, auth_creds)-> None:
+        with allure.step("Получить кол-во досок до удаления доски"):
+            board_list_before = self.get_all_boards_by_org_id(org_id, auth_creds)
+
+        id_list = []
+        for elem in board_list_before:
+            id = elem.get("id")
+            id_list.append(id)
+
+        for elem in id_list:
+            self.delete_board_by_id(elem, auth_creds)
+         
+    
+
     

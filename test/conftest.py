@@ -33,3 +33,14 @@ def api_client(scope="session") -> BoardApi:
 def test_data() -> DataProvider:
     return DataProvider()
 
+# @pytest.fixture
+# def delete_all_boards(scope="session"):
+#     if (api_client.get_all_boards_by_org_id(DataProvider().get("org_id"), DataProvider().get_auth_creds) > DataProvider().get("num_max_board")):
+#         api_client.delete_all_board_of_org(DataProvider().get("org_id"), DataProvider().get_auth_creds)
+    
+    
+
+# @pytest.fixture
+# def auth_user(scope="session"):
+
+

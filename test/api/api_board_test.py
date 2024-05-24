@@ -61,8 +61,19 @@ def test_delete_board_by_id(api_client: BoardApi, test_data: DataProvider):
         assert len(board_list_before) - len(board_list_after) == 1
 
     id_find_after = api_client.find_board_by_id_in_list(board_list_after, id_new_board)
-    with allure.step("Проверяем, что в списке досок есть созданная доска"):
+    with allure.step("Проверяем, что в списке нет удаленной доски"):
         assert id_find_after is False
+
+def test_find_name(api_client: BoardApi, test_data: DataProvider):
+    new_board_creds = test_data.get_create_creds()
+    name_board = new_board_creds.get("name")
+    resp = api_client.create_board(new_board_creds)
+    list_boards = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+    
+    name_find_after = api_client.find_board_by_name_in_list(list_boards, name_board)
+    with allure.step("Проверяем, что в списке есть созданная доска"):
+        assert name_find_after is True
+
 
 
 @allure.story("Удалить все доски")
@@ -77,5 +88,6 @@ def test_deleted_all_boards(api_client: BoardApi, test_data: dict):
 
     for elem in id_list:
         api_client.delete_board_by_id(elem, test_data.get_auth_creds())
+
 
 
