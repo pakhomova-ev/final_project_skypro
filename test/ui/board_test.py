@@ -26,7 +26,7 @@ def test_create_board(browser, test_data: DataProvider, api_client: BoardApi):
     list_boards = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
 
     name_find_after = api_client.find_board_by_name_in_list(list_boards, name_board)
-    h=7
+   
     with allure.step("api.Проверяем, что в списке есть созданная доска"):
         assert name_find_after is True
 
