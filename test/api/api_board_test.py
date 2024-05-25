@@ -74,6 +74,8 @@ def test_find_name(api_client: BoardApi, test_data: DataProvider):
     with allure.step("Проверяем, что в списке есть созданная доска"):
         assert name_find_after is True
 
+#change board
+#def test_patch_board():
 
 
 @allure.story("Удалить все доски")
