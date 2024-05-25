@@ -67,13 +67,6 @@ class MainPage:
             else: name_new_board_find is False
         return name_new_board_find
 
-
-    # не работает, плохо написан regrex
-    # def get_sort_link(self, url: str)-> str:
-    #     pattern = r"*/b/(.+?)/*$"
-    #     match = re.match(pattern, url)
-    #     short_link = match.group(1)
-    #     return short_link
     
 
 
