@@ -42,8 +42,8 @@ class BoardApi:
     @allure.step("Найти доску по id")
     def find_board_by_id_in_list(self, id_list: list, id_board: str) -> bool:
             new_id_list = []
-            for elem in id_list:
-                id = elem.get("id")
+            for i in range(len(id_list)):
+                id = id_list[i].get("id")
                 new_id_list.append(id)
             id_find = False
             for elem in new_id_list:
@@ -55,9 +55,26 @@ class BoardApi:
     
     @allure.step("Проверить есть ли доска с таким именем - {name}")
     def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
+            new_name_list = []
+            for i in range(len(boards_list)):
+                 name = boards_list[i].get("name")
+                 new_name_list.append(name)
             name_find = False
-            for i in len(boards_list):
-                if(boards_list[i].get("name") == name):
+            for elem in new_name_list:
+                if(elem == name):
+                    name_find = True
+                else: name_find = False
+            return name_find
+    
+    @allure.step("Проверить есть ли доска с таким именем - {name}")
+    def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
+            new_name_list = []
+            for i in range(len(boards_list)):
+                 name = boards_list[i].get("name")
+                 new_name_list.append(name)
+            name_find = False
+            for elem in new_name_list:
+                if(elem == name):
                     name_find = True
                 else: name_find = False
             return name_find

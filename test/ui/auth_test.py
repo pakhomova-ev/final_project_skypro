@@ -34,8 +34,11 @@ def find_board_test(browser,test_data: DataProvider, api_client: BoardApi):
     auth_page.login_as(test_data.get("email"), test_data.get("password"))
 
     main_page = MainPage(browser)
-    board_list = api_client.create_board(DataProvider().get_create_creds())
-    name_board = board_list.get("name")
+    new_board = api_client.create_board(DataProvider().get_create_creds())
+    name_board = new_board.get("name")
+
+    board_list = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+    
 
     name_find = api_client.find_board_by_name_in_list(board_list, name_board)
     assert name_find is True
