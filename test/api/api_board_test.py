@@ -88,10 +88,6 @@ def test_get_list_board_list(api_client: BoardApi, test_data: DataProvider):
         assert list_lists[2]["name"] == "Done"
 
 
-
-
-
-
 @allure.story("Удалить все доски")
 def test_deleted_all_boards(api_client: BoardApi, test_data: dict):
     with allure.step("Получить кол-во досок до удаления доски"):
