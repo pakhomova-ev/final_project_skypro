@@ -73,9 +73,23 @@ def test_find_name(api_client: BoardApi, test_data: DataProvider):
     name_find_after = api_client.find_board_by_name_in_list(list_boards, name_board)
     with allure.step("Проверяем, что в списке есть созданная доска"):
         assert name_find_after is True
+@allure.story("получить списки доски")
+def test_get_list_board_list(api_client: BoardApi, test_data: DataProvider):
+    new_board_creds = test_data.get_create_creds()
+    resp = api_client.create_board(new_board_creds)
+    id_board = resp.get("id")
 
-#change board
-#def test_patch_board():
+    list_lists = api_client.get_list_boards_lists(id_board, test_data.get_auth_creds(), test_data.get_json_header())
+    with allure.step("api.Проверить, что лист To Do есть в списке"):
+        assert list_lists[0]["name"] == "To Do"
+    with allure.step("api.Проверить, что лист Doing есть в списке"):
+        assert list_lists[1]["name"] == "Doing"
+    with allure.step("api.Проверить, что лист Done есть в списке"):
+        assert list_lists[2]["name"] == "Done"
+
+
+
+
 
 
 @allure.story("Удалить все доски")

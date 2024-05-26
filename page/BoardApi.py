@@ -80,7 +80,7 @@ class BoardApi:
             return name_find
     
     @allure.step("api.Удалить все доски организации")
-    def delete_all_board_of_org(self, org_id, auth_creds)-> None:
+    def delete_all_board_of_org(self, org_id: int, auth_creds: dict)-> None:
         with allure.step("Получить кол-во досок до удаления доски"):
             board_list_before = self.get_all_boards_by_org_id(org_id, auth_creds)
 
@@ -91,6 +91,17 @@ class BoardApi:
 
         for elem in id_list:
             self.delete_board_by_id(elem, auth_creds)
+
+# https://api.trello.com/1/boards/{id}/lists
+    @allure.step("api.Получить списки доски по id - {id_board} доски")
+    def get_list_boards_lists(self, id_board: int, auth_creds: dict, json_headers: dict) -> list[dict]:
+        path = "{trello}/boards/{id}/lists".format(trello = self.base_url, id = id_board)
+
+        resp = requests.get(path, params=auth_creds, headers=json_headers)
+
+        return resp.json()
+
+
          
     
 

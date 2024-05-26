@@ -24,7 +24,7 @@ class DataProvider:
         return self.data.get("key")
     
     def get_auth_creds(self) -> dict:
-        auth_creds = {"key": "", "token": "", "folter": ""}
+        auth_creds = {}
         auth_creds["key"] = self.data.get("key")
         auth_creds["token"] = self.data.get("token")
         auth_creds["filter"] = self.data.get("filter")
@@ -37,7 +37,23 @@ class DataProvider:
         create_creds["name"] = self.generate_board_name()
         return create_creds
     
+    def get_card_creds(self, id_list: int) -> dict:
+        card_creds = {}
+        card_creds["idList"] = id_list
+        card_creds["key"] = self.data.get("key")
+        card_creds["token"] = self.data.get("token")
+        card_creds["name"] = self.generate_card_name()
+    
     def generate_board_name(self):
         fake = Faker()
         board_name = fake.file_name(extension='')
         return board_name
+    
+    def generate_card_name(self):
+        fake = Faker()
+        card_name = fake.color_name()
+        return card_name
+
+    def get_json_header(self) -> dict:
+        return {"Accept": "application/json"} 
+        
