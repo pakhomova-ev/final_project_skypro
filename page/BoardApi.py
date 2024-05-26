@@ -100,6 +100,12 @@ class BoardApi:
         resp = requests.get(path, params=auth_creds, headers=json_headers)
 
         return resp.json()
+    
+    @allure.step("api.Создать новую карточку")
+    def create_card(self, card_creds: dict):
+        path = "{trello}/cards/".format(trello = self.base_url)
+        resp = requests.get(path, params=card_creds)
+        return resp.json()
 
 
          
