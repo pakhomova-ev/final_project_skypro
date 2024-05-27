@@ -1,3 +1,31 @@
+### Allure
+python -m pytest --alluredir allure/results
+- copy folder history into allure/results from allure/final
+- delete allure/final
+allure generate allure/results -o allure/final
+- deleted allure/results
+allure open allure/final
+
+### LP
+- создание новой доски
+  -[x] api
+  -[x]ui
+- удаление существующей доски
+  -[x] api
+  -[x]ui
+- добавление карточки на доску
+  -[x] api
+  -[]ui
+- редактирование карточки
+  -[x] api
+  -[]ui
+- удаление карточки
+  -[x] api
+  -[]ui
+- перемещение карточки в другую колонку
+  -[x] api
+  -[]ui
+
 ### Доска
 - Создать доску
  - Создать по шаблону
@@ -12,7 +40,7 @@
 
 ### Список
 - Получить списки на доске:
- - Запрос GET, id board
+ -[x] Запрос GET, id board
  - --url 'https://api.trello.com/1/boards/{id}/lists?key=APIKey&token=APIToken' \
   --header 'Accept: application/json'
 - Получить список по id
@@ -24,16 +52,38 @@
 
 
 ### Карточка
-- [] Добавление карточки на доску
+- [x] Добавление карточки на доску
  - Запрос POST, idList
  -  --url 'https://api.trello.com/1/cards?idList=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken' \
   --header 'Accept: application/json'
-- [] Изменение карточки
+- [x] Изменение карточки
  - Запрос PUT, id card
  -  --url 'https://api.trello.com/1/cards/{id}?key=APIKey&token=APIToken' \
   --header 'Accept: application/json'
-- [] Удаление карточки
+- [x] Удаление карточки
  - Запрос DEL, id card
  -  --url 'https://api.trello.com/1/cards/{id}?key=APIKey&token=APIToken'
 - [] Перемещение карточки в другую колонку
- - Запрос actions
+ - Запрос actions ui
+ -[x] Запрос PUT, id card, new_id_list
+  - 
+
+
+
+  <ul class="123">
+  <li class="board">
+  <a class="board-tile" href="/b/heyer/fear">
+  <div>fear</div>
+  </a>
+  </li>
+  </ul>  
+
+  <div class="1">
+  <div class="2">
+  <div class="3">
+  <h2 class="u">fear</h2>
+  </div>
+  </div>
+  </div> 
+
+  поиск на главной странице по доски по локатору ul.boards-page-board-section-list a[href*="simple"]
