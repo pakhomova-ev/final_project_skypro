@@ -64,7 +64,7 @@ allure open allure/final
  - Запрос DEL, id card
  -  --url 'https://api.trello.com/1/cards/{id}?key=APIKey&token=APIToken'
 - [] Перемещение карточки в другую колонку
- - Запрос actions ui
+ -[] Запрос actions ui
  -[x] Запрос PUT, id card, new_id_list
   - 
 
@@ -85,5 +85,29 @@ allure open allure/final
   </div>
   </div>
   </div> 
+# ol#board >li[data-list-id="6654cccadb15713775b136cf"] > div[data-testid="list"] >div[data-testid="list-header"] textarea[data-testid="list-name-textarea"]
+  <ol id="board">
+  <li data-list-id="id_list1">
+  <div data-testid="list">
+  <div data-testid="list-header">
+  <textarea data-testid="list-name-textarea"></textarea>
+  </div>
+  </div>
+  </li>
+  <li data-list-id="id_list2">
+  <div data-testid="list">
+  <div data-testid="list-header">
+  <textarea data-testid="list-name-textarea"></textarea>
+  </div>
+  </div>
+  </li>
+  <li data-list-id="id_list3">
+  <div data-testid="list">
+  <div data-testid="list-header">
+  <textarea data-testid="list-name-textarea"></textarea>
+  </div>
+  </div>
+  </li>
+  </ol>
 
   поиск на главной странице по доски по локатору ul.boards-page-board-section-list a[href*="simple"]

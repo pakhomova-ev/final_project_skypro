@@ -96,7 +96,7 @@ def test_add_card_on_list(browser: WebDriver, test_data: DataProvider, api_clien
     board_page.click_add_a_card(id_new_list)
 
     
-def test_add_new_card_x(browser, test_data: DataProvider, api_client: BoardApi):
+def test_add_new_card_x(browser: WebDriver, test_data: DataProvider, api_client: BoardApi):
     auth_page = AuthPage(browser)
     auth_page.go()
     auth_page.login_as(test_data.get("email"), test_data.get("password"))
@@ -109,6 +109,42 @@ def test_add_new_card_x(browser, test_data: DataProvider, api_client: BoardApi):
     board_page.type_name_card("ghjty67")
     board_page.click_add_card_with_text()
     board_page.click_x_new_card()
+    # board_page.find_lists('6654cccadb15713775b136cf')
+    board_page.click_add_a_card()
+    board_page.open_card()
+    board_page.change_name_card()
+    board_page.open_card()
+    board_page.add_to_archive_card()
+    board_page.delete_card()
+
+    time.sleep(3)
+
+def test_click_textarea(browser: WebDriver, test_data: DataProvider):
+    auth_page = AuthPage(browser)
+    auth_page.go()
+    auth_page.login_as(test_data.get("email"), test_data.get("password"))
+
+    main_page = MainPage(browser)
+    main_page.find_board_by_name("girl")
+    board_page = BoardPage(browser)
+    board_page.open_board_page("girl", "zVQ7z5hY")
+    id_list = '6654cccadb15713775b136cf'
+    board_page.click_text_area_by_id(id_list)
+    time.sleep(3)
+
+def test_drag_drop(browser: WebDriver, test_data: DataProvider):
+    auth_page = AuthPage(browser)
+    auth_page.go()
+    auth_page.login_as(test_data.get("email"), test_data.get("password"))
+
+    main_page = MainPage(browser)
+    main_page.find_board_by_name("girl")
+    board_page = BoardPage(browser)
+    board_page.open_board_page("girl", "zVQ7z5hY")
+
+    board_page.move_card_to_another_list()
+    time.sleep(3)
+
 
     # board_page.click_add_a_card("664cf65097e9b86e8bc07c20")
 
