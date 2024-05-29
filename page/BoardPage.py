@@ -81,8 +81,8 @@ class BoardPage:
         time.sleep(3)
         self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id={id_list}] form button[data-testid="list-card-composer-add-card-button"]').click()
 
-    def click_add_a_card(self):
-        self.__driver.find_element(By.CSS_SELECTOR, "button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc").click()
+    def click_add_a_card(self,id_list):
+        self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id={id_list}] button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc').click()
         time.sleep(3)
 
     def type_name_card(self, name_card):
