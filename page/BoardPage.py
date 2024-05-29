@@ -55,19 +55,6 @@ class BoardPage:
         self.__driver.find_element(By.CSS_SELECTOR, "textarea[data-testid='list-name-textarea']").send_keys(name_list)
         self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-add-list-button']").click()
 
-    @allure.step("ui.Создать новый список")
-    def create_new_list(self, name_list):
-        # button[data-testid="list-composer-button"]
-        self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-button']").click()
-        
-
-        # form.vVqwaYKVgTygrk > textarea[data-testid="list-name-textarea"]
-        self.__driver.find_element(By.CSS_SELECTOR, "form.vVqwaYKVgTygrk > textarea[data-testid='list-name-textarea']").send_keys(name_list)
-        # button[data-testid="list-composer-add-list-button"]
-        self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-add-list-button']").click()
-        #получить список, чтобы удостовериться, что досок стало на 1 больше div.board-canvas ol#board >li - список досок
-
-    # def create_new_card(self):
 
     # div.content-all-boards > div > div >div.boards-page-board-section.mod-no-sidebar >div > ul.boards-page-board-section-list > li > a >div > div[title="against"] 
     @allure.step("ui.Создать новую карточку")
@@ -81,8 +68,8 @@ class BoardPage:
         time.sleep(3)
         self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id={id_list}] form button[data-testid="list-card-composer-add-card-button"]').click()
 
-    def click_add_a_card(self):
-        self.__driver.find_element(By.CSS_SELECTOR, "button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc").click()
+    def click_add_a_card(self,id_list):
+        self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id={id_list}] button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc').click()
         time.sleep(3)
 
     def type_name_card(self, name_card):
@@ -95,8 +82,7 @@ class BoardPage:
         self.__driver.find_element(By.CSS_SELECTOR, "div.Y44OETtkQ7R6r5 button.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.HAVwIqCeMHpVKh.SEj5vUdI3VvxDc").click()
         time.sleep(3)
 
-    def find_lists(self, id_list):
-
+    def find_lists(self):
         list_lists = self.__driver.find_element(
             By.CSS_SELECTOR, 'li[data-list-id]')
         list_lists.click()
@@ -136,30 +122,5 @@ class BoardPage:
         element =self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] button[data-testid="list-add-card-button"]')
         element.click()
 
-# div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd textarea[data-testid="card-back-title-input"]
-# button.Y9J4BArcarEAX9.js-close-window.dialog-close-button.nHJWKNB8DHe00C
-    
-    # ol#board >li[data-list-id="6654cccadb15713775b136cf"] > div[data-testid="list"] >div[data-testid="list-header"]
-    # find_lists("6654de22886e975b680f2d60")
-    # ol#board >li[data-list-id="6654de22886e975b680f2d60"] > div[data-testid="list"] >div[data-testid="list-header"] textarea[data-testid="list-name-textarea"]
-
-
-
-    # li[data-list-id=""]
-
-    # def click_name_list(self):
-    #     webelem = self.__driver.find_element(By.CSS_SELECTOR, "button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc")
-    #     time.sleep(3)
-    #     webelem.click()
-    #     time.sleep(3)
-    # li[data-list-id="6654cccadb15713775b136cf"]  div.mKJWg6W_CLHoiO > textarea
-
-    # li[data-list-id="6654cccadb15713775b136cf"]  div[data-testid="list-footer"] > button[data-testid="list-add-card-button"]
-
-# li[data-list-id="6654c15a347e3e8cdc310eb9"] button[data-testid="list-add-card-button"]
-# li[data-list-id="6654c15a347e3e8cdc310eb9"] form textarea[data-testid="list-card-composer-textarea"]
-# li[data-list-id="6654c15a347e3e8cdc310eb9"] form button[data-testid="list-card-composer-add-card-button"]
-# li[data-list-id="6654c86b4739a4ab195e7cf6"] button[data-testid="list-add-card-button"]
-# li[data-list-id="6654c86b4739a4ab195e7cf6"] button[data-testid="list-add-card-button"]
 
        

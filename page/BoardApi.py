@@ -148,7 +148,7 @@ class BoardApi:
 
     # https://api.trello.com/1/lists/{id}/cards
     @allure.step("api.Получить список карточек списка id - {id_list}")
-    def get_cards_of_list(self, auth_creds: dict, json_header: dict, id_list) -> list[dict]:
+    def get_cards_of_list(self, auth_creds: dict, json_header: dict, id_list: str) -> list[dict]:
          path = "{trello}/lists/{id}/cards".format(trello = self.base_url, id = id_list)
          resp = requests.get(path, params=auth_creds, headers=json_header)
          return resp.json()

@@ -8,6 +8,8 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from page.AuthPage import AuthPage
 from page.BoardApi import BoardApi
 from page.BoardPage import BoardPage
+from page.CardPage import CardPage
+from page.ListPage import ListPage
 from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 from selenium.webdriver.common.by import By
@@ -71,6 +73,7 @@ def test_find_by_name(browser: WebDriver):
 
 @allure.story("Добавить карточку на доску")
 def test_add_card_on_list(browser: WebDriver, test_data: DataProvider, api_client: BoardApi):
+    list_page = ListPage(browser)
     new_board_dict = api_client.create_board(test_data.get_create_creds())
     name_new_board = new_board_dict.get("name")
     id_new_board = new_board_dict.get("id")
@@ -88,7 +91,7 @@ def test_add_card_on_list(browser: WebDriver, test_data: DataProvider, api_clien
     board_page.open_board_page(name_new_board, short_link)
     
     name_list = DataProvider().generate_new_list_name()
-    board_page.create_new_list(name_list)
+    list_page.create_new_list(name_list)
 
     list_lists = api_client.get_list_boards_lists(id_new_board, test_data.get_auth_creds(), test_data.get_json_header())
     id_new_list = api_client.get_list_id_by_name(list_lists, name_list)
@@ -125,12 +128,21 @@ def test_click_textarea(browser: WebDriver, test_data: DataProvider):
     auth_page.login_as(test_data.get("email"), test_data.get("password"))
 
     main_page = MainPage(browser)
-    main_page.find_board_by_name("girl")
+    main_page.find_board_by_name("rtm")
     board_page = BoardPage(browser)
-    board_page.open_board_page("girl", "zVQ7z5hY")
-    id_list = '6654cccadb15713775b136cf'
-    board_page.click_text_area_by_id(id_list)
-    time.sleep(3)
+    board_page.open_board_page("rtm", "uF0vIUeg")
+
+    list_page = ListPage(browser)
+    name_new_list = test_data.generate_new_list_name()
+    list_page.create_new_list(name_new_list)
+    browser.refresh()
+    id_list = list_page.get_id_list_by_name(name_new_list)
+
+    name_card = test_data.generate_card_name()
+    
+    card_page = CardPage(browser)
+    card_page.create_new_card(id_list, name_card)
+
 
 def test_drag_drop(browser: WebDriver, test_data: DataProvider):
     auth_page = AuthPage(browser)
@@ -145,27 +157,54 @@ def test_drag_drop(browser: WebDriver, test_data: DataProvider):
     board_page.move_card_to_another_list()
     time.sleep(3)
 
+def test_find_elenemt(browser: WebDriver, test_data: DataProvider):
+    auth_page = AuthPage(browser)
+    auth_page.go()
+    auth_page.login_as(test_data.get("email"), test_data.get("password"))
 
-    # board_page.click_add_a_card("664cf65097e9b86e8bc07c20")
-
-    # list_lists = api_client.get_list_boards_lists(id_new_board, test_data.get_auth_creds(), test_data.get_json_header())
-    # id_new_list = api_client.get_list_id_by_name(list_lists, name_list)
-
-    # нет проверики на юай созданного списка
-    # name_list_find = main_page.find_list_by_name(name_list)
-    # id_list_find = main_page.find_list_by_id(id_new_list)
-    # assert id_list_find is True
-    # id_new_list = api_client.create_new_list(name_new_list, id_new_board, test_data.get_auth_creds())
-
-
-
-# ol#board > li h2[data-testid="list-name"]
-# ol#board > li div.mKJWg6W_CLHoiO
-
-
-
-# проверить что карточка есть в нужном списке
-# получить список всех карточек доски и сравнить id list
-
+    main_page = MainPage(browser)
+    main_page.find_board_by_name("rtm")
+    board_page = BoardPage(browser)
+    board_page.open_board_page("rtm", "uF0vIUeg")
+    name_list = "DimGray 2946"    
+    elements = browser.find_elements(By.CSS_SELECTOR, "ol#board > li")
+    id_list = ''
+    elements = browser.find_elements(By.CSS_SELECTOR, "ol#board > li")
+    for elem in elements:
+            text = elem.text
+            list = text.splitlines()
+            if(list[0] == name_list): 
+                id_list = elem.get_attribute('data-list-id')
+                break            
+    return id_list
 
 
+def test_create_card_x(browser: WebDriver, test_data: DataProvider):
+    auth_page = AuthPage(browser)
+    auth_page.go()
+    auth_page.login_as(test_data.get("email"), test_data.get("password"))
+
+    main_page = MainPage(browser)
+    main_page.find_board_by_name("rtm")
+    board_page = BoardPage(browser)
+    board_page.open_board_page("rtm", "uF0vIUeg")
+
+    list_page = ListPage(browser)
+    name_new_list = test_data.generate_new_list_name()
+    new_list = list_page.create_new_list(name_new_list)
+    browser.refresh()
+    id_list = list_page.get_id_list_by_name(name_new_list)
+
+    name_card = test_data.generate_card_name()
+
+    card_page = CardPage(browser)
+
+    card_page.scroll_to_list(id_list)
+    click_card_add = card_page.click_add_a_card(id_list)
+    card_page.type_name_card(name_card, id_list)
+    card_page.click_add_card_with_text(id_list)
+    card_page.click_x_new_card()
+
+    elem_info = list_page.elem_info(id_list)
+
+    y = 67

@@ -97,14 +97,14 @@ allure open allure/final
   <li data-list-id="id_list2">
   <div data-testid="list">
   <div data-testid="list-header">
-  <textarea data-testid="list-name-textarea"></textarea>
+  <textarea data-testid="list-name-textarea">Gnom 567</textarea>
   </div>
   </div>
   </li>
   <li data-list-id="id_list3">
   <div data-testid="list">
   <div data-testid="list-header">
-  <textarea data-testid="list-name-textarea"></textarea>
+  <textarea data-testid="list-name-textarea">Mutf</textarea>
   </div>
   </div>
   </li>

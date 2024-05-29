@@ -70,10 +70,10 @@ class MainPage:
     
     @allure.step("ui.Найти в списке lists по имени {name_list}")
     def find_list_by_name(self, name_list: str)-> bool:
-        list_lists = self.__driver.find_elements(By.XPATH, "//div[@class='mKJWg6W_CLHoiO/textarea']")
+        list_lists = self.__driver.find_elements(By.XPATH, "//div[@class='mKJWg6W_CLHoiO']/textarea")
         name_new_list_find = False
-        for i in range(len(list_lists)):
-            if(list_lists[i].find_element(By.XPATH, f'//[contains(text(), {name_list})]')):
+        for elem in list_lists:
+            if(elem.find_element(By.XPATH, f'//[contains(text(), "{name_list}")]')):
                 name_new_list_find is True
             else: name_new_list_find is False
         return name_new_list_find
@@ -90,14 +90,10 @@ class MainPage:
     @allure.step("ui.Найти в списке lists по id {id_list}")
     def find_list_by_id(self, id_list: str)-> bool:
         find_id = False
-        list_of_lists = self.__driver.find_elements(By.CSS_SELECTOR, f'div.board-canvas ol#board > li')
+        list_of_lists = self.__driver.find_elements(By.CSS_SELECTOR, f'ol#board > li')
         for i in range(len(list_of_lists)):
-            if list_of_lists[i].find_element(By.CSS_SELECTOR, f'[data-list-id={id_list}]'):
+            if list_of_lists[i].find_element(By.CSS_SELECTOR, f'[data-list-id="{id_list}"]'):
                 find_id = True
         return find_id
-        
-    
-    #[data-list-id={id_list}]
 
-#if(list_lists[i].find_element(By.XPATH, f'//[contains(text(), {name_list})]')):
 

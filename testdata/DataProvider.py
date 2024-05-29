@@ -38,6 +38,13 @@ class DataProvider:
         create_creds["name"] = self.generate_board_name()
         return create_creds
     
+    def get_create_creds_with_name(self, name_board) -> dict:
+        create_creds = {}
+        create_creds["key"] = self.get_key()
+        create_creds["token"] = self.get_token()
+        create_creds["name"] = name_board
+        return create_creds
+    
     def get_card_creds(self, id_list: str) -> dict:
         card_creds = {}
         card_creds["idList"] = id_list
