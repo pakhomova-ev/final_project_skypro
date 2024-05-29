@@ -32,6 +32,10 @@ class CardPage:
         #     .perform()
 
         
+<<<<<<< HEAD
+=======
+
+>>>>>>> d6fc7e5df8f0857eb377e32acc54f136dcd58b36
         with allure.step("ui.Нажать на кнопку Add a card"):
             # li[data-list-id="665655a76c7007157023eeb8"] > div[data-testid="list"] div[data-testid="list-footer"] button[data-testid="list-add-card-button"]
             button_add_card = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] > div[data-testid="list"] div[data-testid="list-footer"] button[data-testid="list-add-card-button"]')
@@ -50,7 +54,11 @@ class CardPage:
         with allure.step("ui.Нажать кнопку x"):
             x_card_button = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] form button[data-testid="list-card-composer-cancel-button"]')))
             x_card_button.click
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> d6fc7e5df8f0857eb377e32acc54f136dcd58b36
     def scroll_to_list(self, id_list):
         iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
         ActionChains(self.__driver)\
