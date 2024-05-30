@@ -57,16 +57,18 @@ class CardApi:
         return id_card
     
     @allure.step("Найти карточку по id  - {id_card}")
-    def find_card_by_id_in_list(self, id_list: list, id_card: str) -> bool:
+    def find_card_by_id_in_list(self, card_list: list, id_card: str) -> bool:
             new_id_list = []
-            for i in range(len(id_list)):
-                id = id_list[i].get("id")
-                new_id_list.append(id)
             id_find = False
-            for elem in new_id_list:
-                if(elem == id_card):
-                    id_find = True
-                else: id_find = False
+            if len(card_list) > 0:
+                for i in range(len(card_list)):
+                    id = card_list[i].get("id")
+                    new_id_list.append(id)
+                for elem in new_id_list:
+                    if(elem == id_card):
+                        id_find = True
+                    else: id_find = False
+            else: id_find = False
             return id_find
 
 
