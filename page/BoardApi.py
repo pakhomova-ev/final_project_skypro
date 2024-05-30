@@ -20,13 +20,13 @@ class BoardApi:
         return resp.json()
     
     @allure.step("api.Создать новую доску")
-    def create_board(self, auth_creds: dict) -> dict:
+    def create_board(self, create_creds: dict) -> dict:
         """
         Метод создает новую доску
         """
 
         path = "{trello}/boards/".format(trello = self.base_url)
-        resp = requests.post(path, params=auth_creds)
+        resp = requests.post(path, params=create_creds)
 
         return resp.json()
     
@@ -79,6 +79,7 @@ class BoardApi:
                     name_find = True
                 else: name_find = False
             return name_find
+
     
     @allure.step("Проверить есть ли доска с таким именем - {name}")
     def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
@@ -93,18 +94,11 @@ class BoardApi:
                 else: name_find = False
             return name_find
     
-    @allure.step("Найти карточку по id  - {id_card}")
-    def find_card_by_id_in_list(self, id_list: list, id_card: str) -> bool:
-            new_id_list = []
-            for i in range(len(id_list)):
-                id = id_list[i].get("id")
-                new_id_list.append(id)
-            id_find = False
-            for elem in new_id_list:
-                if(elem == id_card):
-                    id_find = True
-                else: id_find = False
-            return id_find
+
+    
+    
+
+         
     
     @allure.step("api.Удалить все доски организации")
     def delete_all_board_of_org(self, org_id: int, auth_creds: dict)-> None:
@@ -129,29 +123,13 @@ class BoardApi:
         resp = requests.get(path, params=auth_creds, headers=json_header)
         return resp.json()
 
-    #curl --request POST \
-    #--url 'https://api.trello.com/1/lists?name={name}&idBoard=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken'
-    @allure.step("api.Создать новый список на доске id - {id_board}")
-    def create_new_list(self, name: str, id_board: str, auth_creds: dict):
-        path = "{trello}/lists".format(trello = self.base_url)
-        auth_creds["name"]= name
-        auth_creds["idBoard"]= id_board
-        resp = requests.post(path, params=auth_creds)
 
-        return resp.json()
     # https://api.trello.com/1/cards?idList=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken
     @allure.step("api.Создать новую карточку")
     def create_card(self, card_creds: dict, json_header: dict):
         path = "{trello}/cards/".format(trello = self.base_url)
         resp = requests.post(path, params=card_creds, headers=json_header)
         return resp.json()
-
-    # https://api.trello.com/1/lists/{id}/cards
-    @allure.step("api.Получить список карточек списка id - {id_list}")
-    def get_cards_of_list(self, auth_creds: dict, json_header: dict, id_list: str) -> list[dict]:
-         path = "{trello}/lists/{id}/cards".format(trello = self.base_url, id = id_list)
-         resp = requests.get(path, params=auth_creds, headers=json_header)
-         return resp.json()
     
 
     #url = "https://api.trello.com/1/cards/{id}"
@@ -183,12 +161,7 @@ class BoardApi:
         short_link = match.group(1)
         return short_link
     
-    def get_list_id_by_name(self, list_lists: dict, name_list: str):
-        id_list = ''
-        for i in range(len(list_lists)):
-            if(list_lists[i].get("name") == name_list):
-                id_list = list_lists[i].get("id")
-        return id_list
+
     
     @allure.step("Проверить есть ли доска с таким именем - {name}")
     def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:

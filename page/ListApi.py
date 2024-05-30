@@ -1,34 +1,27 @@
-import time
+import requests 
 import allure
-from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver 
-from selenium.webdriver.support.ui import WebDriverWait 
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver import ActionChains
-
-from configuration.ConfigProvider import ConfigProvider
-from testdata.DataProvider import DataProvider
 
 class ListApi:
-     
-    def __init__(self, driver: WebDriver) -> None:
-        self.__driver = driver
 
-    @allure.step("ui.Создать новый список")
-    def create_new_list(self, name_list):
-        # button[data-testid="list-composer-button"]
-        self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-button']").click()
-        
-        # form.vVqwaYKVgTygrk > textarea[data-testid="list-name-textarea"]
-        self.__driver.find_element(By.CSS_SELECTOR, "form.vVqwaYKVgTygrk > textarea[data-testid='list-name-textarea']").send_keys(name_list)
-        # button[data-testid="list-composer-add-list-button"]
-        self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-add-list-button']").click()
-        #получить список, чтобы удостовериться, что досок стало на 1 больше div.board-canvas ol#board >li - список досок
+    def __init__(self, base_url: str, token: str, key: str) -> None:
+        self.base_url = base_url
+        self.token = token
+        self.key = key
 
-    def scroll_to_button_add_list(self):
-        iframe = self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-button']")
-        ActionChains(self.__driver)\
-            .scroll_to_element(iframe)\
-            .perform()
-        
-        time.sleep(3)
+    #curl --request POST \
+    #--url 'https://api.trello.com/1/lists?name={name}&idBoard=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken'
+    @allure.step("api.Создать новый список на доске id - {id_board}")
+    def create_new_list(self, name: str, id_board: str, auth_creds: dict):
+        path = "{trello}/lists".format(trello = self.base_url)
+        auth_creds["name"]= name
+        auth_creds["idBoard"]= id_board
+        resp = requests.post(path, params=auth_creds)
+        return resp.json()
+
+    @allure.step("api.Получить id списка по имени {name_list}")
+    def get_list_id_by_name(self, list_lists: dict, name_list: str):
+        id_list = ''
+        for i in range(len(list_lists)):
+            if(list_lists[i].get("name") == name_list):
+                id_list = list_lists[i].get("id")
+        return id_list

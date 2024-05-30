@@ -53,7 +53,6 @@ class ListPage:
         return id_list
     
     def scroll_list(self, id_list: str):
-<<<<<<< HEAD
         list_element = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
         self.__driver.execute_script("arguments[0].scrollIntoView(true);", list_element)
 
@@ -70,16 +69,4 @@ class ListPage:
             if elem.find_element(By.CSS_SELECTOR, f'[data-list-id="{id_list}"]'):
                 find_id = True
         return find_id
-=======
-        # iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
-        # ActionChains(self.__driver)\
-        # .scroll_to_element(iframe)\
-        # .perform()
-        list_element = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
-        self.__driver.execute_script("arguments[0].scrollIntoView(true);", list_element)
 
-    def elem_info(self, id_list):
-        elem = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
-        return elem
-             
->>>>>>> d6fc7e5df8f0857eb377e32acc54f136dcd58b36

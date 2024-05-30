@@ -5,6 +5,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 from configuration.ConfigProvider import ConfigProvider
 from testdata.DataProvider import DataProvider
@@ -17,27 +18,8 @@ class CardPage:
 
 
     def create_new_card(self, id_list, name_card):
-        
-        # with allure.step("ui.Прокрутить страницу до нужного списка {id_list}"):
-        #     iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
-        #     ActionChains(self.__driver)\
-        #         .scroll_to_element(iframe)\
-        #         .perform()
-            
-        # with allure.step("ui.Навести мышку на кнопку Add a card"):
-        #     hoverable = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] button[data-testid="list-add-card-button"]')
-        #     ActionChains(self.__driver)\
-        #     .move_to_element(hoverable)\
-        #     .click(hoverable)\
-        #     .perform()
 
-        
-<<<<<<< HEAD
-=======
-
->>>>>>> d6fc7e5df8f0857eb377e32acc54f136dcd58b36
         with allure.step("ui.Нажать на кнопку Add a card"):
-            # li[data-list-id="665655a76c7007157023eeb8"] > div[data-testid="list"] div[data-testid="list-footer"] button[data-testid="list-add-card-button"]
             button_add_card = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] > div[data-testid="list"] div[data-testid="list-footer"] button[data-testid="list-add-card-button"]')
             button_add_card.click()
         
@@ -54,35 +36,33 @@ class CardPage:
         with allure.step("ui.Нажать кнопку x"):
             x_card_button = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] form button[data-testid="list-card-composer-cancel-button"]')))
             x_card_button.click
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> d6fc7e5df8f0857eb377e32acc54f136dcd58b36
+    def update_name_card(self, name_card: str, new_name_card: str):
+        with allure.step("ui.Нажать на название карточки"):
+            name_click = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="board"]//a[contains(text(), "{name_card}")]')))
+            name_click.click()
+
+        # div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog']-card
+        with allure.step("ui.Стереть имя карточки {name_card} и ввести новое имя {new_name_card}"):
+            clear_name = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog']")))
+            clear_name.click()
+            clear_name.send_keys(Keys.BACKSPACE)
+            clear_name.send_keys(new_name_card)
+            clear_name.send_keys(Keys.ENTER)
+
+        with allure.step("ui.Закрыть карточку"):
+            card_close = self.__driver.find_element(By.CSS_SELECTOR, "button.js-close-window.dialog-close-button")
+            card_close.click()
+
+        
+
+      
+
     def scroll_to_list(self, id_list):
         iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
         ActionChains(self.__driver)\
             .scroll_to_element(iframe)\
             .perform()
-
-
-    def click_add_a_card(self,id_list):
-        self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] button.O9vivwyDxMqo3q.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.PnEv2xIWy3eSui.SEj5vUdI3VvxDc').click()
-        time.sleep(3)
-
-
-    def type_name_card(self, name_card: str, id_list: str) -> None:
-        type_name = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR,  f'li[data-list-id="{id_list}"] form textarea[data-testid="list-card-composer-textarea"]')))
-        type_name.send_keys(name_card)
-
-    def click_add_card_with_text(self, id_list: str):
-        add_card_button = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] form button[data-testid="list-card-composer-add-card-button"]')))
-        add_card_button.click()
-        time.sleep(3)
-
-    def click_x_new_card(self):
-        self.__driver.find_element(By.CSS_SELECTOR, "div.Y44OETtkQ7R6r5 button.bxgKMAm3lq5BpA.iUcMblFAuq9LKn.HAVwIqCeMHpVKh.SEj5vUdI3VvxDc").click()
-        time.sleep(3)
 
         
 

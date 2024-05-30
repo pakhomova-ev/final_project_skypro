@@ -123,9 +123,9 @@ def test_create_new_card(api_client: BoardApi, test_data: DataProvider):
 
     
 @allure.story("Удалить все доски")
-def test_deleted_all_boards(api_client: BoardApi, test_data: dict):
+def test_deleted_all_boards(api_board: BoardApi, test_data: dict):
     with allure.step("Получить кол-во досок до удаления доски"):
-        board_list_before = api_client.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+        board_list_before = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
 
     id_list = []
     for elem in board_list_before:
@@ -133,7 +133,7 @@ def test_deleted_all_boards(api_client: BoardApi, test_data: dict):
         id_list.append(id)
 
     for elem in id_list:
-        api_client.delete_board_by_id(elem, test_data.get_auth_creds())
+        api_board.delete_board_by_id(elem, test_data.get_auth_creds())
 
 
 

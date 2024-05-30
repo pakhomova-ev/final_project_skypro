@@ -15,7 +15,7 @@ allure open allure/final
   -[x]ui
 - добавление карточки на доску
   -[x] api
-  -[]ui
+  -[x]ui
 - редактирование карточки
   -[x] api
   -[]ui
