@@ -17,6 +17,7 @@ class ListPage:
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
 
+    @allure.step("ui.Создать новую доску в списке {name_list}")
     def create_new_list(self, name_list):
         with allure.step("ui.Прокрутить страницу до кнопки Add another list"):
             iframe = self.__driver.find_element(By.CSS_SELECTOR, button_add_new_list)
@@ -52,6 +53,7 @@ class ListPage:
                 break            
         return id_list
     
+    @allure.step("ui.Перемотать на нужный список {id_list}")
     def scroll_list(self, id_list: str):
         list_element = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
         self.__driver.execute_script("arguments[0].scrollIntoView(true);", list_element)
@@ -69,4 +71,11 @@ class ListPage:
             if elem.find_element(By.CSS_SELECTOR, f'[data-list-id="{id_list}"]'):
                 find_id = True
         return find_id
+        
+    @allure.step("ui.Перемотать на нужный список {id_list}")
+    def scroll_to_list_action(self, id_list):
+        iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
+        ActionChains(self.__driver)\
+            .scroll_to_element(iframe)\
+            .perform()
 

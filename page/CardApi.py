@@ -36,15 +36,15 @@ class CardApi:
         return resp.json()
     
 
-    @allure.step("api.Проверить есть ли картчка с таким именем - {name} - существует в списке")
-    def find_card_by_name_in_list(self, card_list: list, name: str) -> bool:
+    @allure.step("api.Проверить есть ли картчка с таким именем - {name_card} - существует в списке")
+    def find_card_by_name_in_list(self, card_list: list, name_card: str) -> bool:
             new_name_list = []
             for i in range(len(card_list)):
                  name = card_list[i].get("name")
                  new_name_list.append(name)
             name_find = False
             for elem in new_name_list:
-                if(elem == name):
+                if(elem == name_card):
                     name_find = True
                 else: name_find = False
             return name_find

@@ -41,14 +41,14 @@ class BoardApi:
         return resp.json()
     
     @allure.step("Найти сущность по id - {id}")
-    def find_x_by_id_in_list(self, id_list: list, id: str) -> bool:
+    def find_x_by_id_in_list(self, id_list: list, id_x: str) -> bool:
             new_id_list = []
             for i in range(len(id_list)):
                 id = id_list[i].get("id")
                 new_id_list.append(id)
             id_find = False
             for elem in new_id_list:
-                if(elem == id):
+                if(elem == id_x):
                     id_find = True
                 else: id_find = False
             return id_find
@@ -67,38 +67,32 @@ class BoardApi:
             return id_find
     
     
-    @allure.step("Проверить есть ли доска с таким именем - {name}")
-    def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
+    @allure.step("Проверить есть ли доска с таким именем - {name_board}")
+    def find_board_by_name_in_list(self, boards_list: list, name_board: str) -> bool:
             new_name_list = []
             for i in range(len(boards_list)):
                  name = boards_list[i].get("name")
                  new_name_list.append(name)
             name_find = False
             for elem in new_name_list:
-                if(elem == name):
+                if(elem == name_board):
                     name_find = True
                 else: name_find = False
             return name_find
 
     
-    @allure.step("Проверить есть ли доска с таким именем - {name}")
-    def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
+    @allure.step("Проверить есть ли доска с таким именем - {name_board}")
+    def find_board_by_name_in_list(self, boards_list: list, name_board: str) -> bool:
             new_name_list = []
             for i in range(len(boards_list)):
                  name = boards_list[i].get("name")
                  new_name_list.append(name)
             name_find = False
             for elem in new_name_list:
-                if(elem == name):
+                if(elem == name_board):
                     name_find = True
                 else: name_find = False
-            return name_find
-    
-
-    
-    
-
-         
+            return name_find       
     
     @allure.step("api.Удалить все доски организации")
     def delete_all_board_of_org(self, org_id: int, auth_creds: dict)-> None:
@@ -160,21 +154,6 @@ class BoardApi:
         match = re.search(r"/b/([a-zA-Z0-9]+)", url)
         short_link = match.group(1)
         return short_link
-    
-
-    
-    @allure.step("Проверить есть ли доска с таким именем - {name}")
-    def find_board_by_name_in_list(self, boards_list: list, name: str) -> bool:
-            new_name_list = []
-            for i in range(len(boards_list)):
-                 name = boards_list[i].get("name")
-                 new_name_list.append(name)
-            name_find = False
-            for elem in new_name_list:
-                if(elem == name):
-                    name_find = True
-                else: name_find = False
-            return name_find
         
          
          

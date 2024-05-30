@@ -37,18 +37,21 @@ class CardPage:
             x_card_button = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, f'li[data-list-id="{id_list}"] form button[data-testid="list-card-composer-cancel-button"]')))
             x_card_button.click
 
+    @allure.step("ui.Изменить имя карточки {name_card}")
     def update_name_card(self, name_card: str, new_name_card: str):
         with allure.step("ui.Нажать на название карточки"):
             name_click = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="board"]//a[contains(text(), "{name_card}")]')))
             name_click.click()
 
-        # div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog']-card
         with allure.step("ui.Стереть имя карточки {name_card} и ввести новое имя {new_name_card}"):
-            clear_name = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog']")))
-            clear_name.click()
-            clear_name.send_keys(Keys.BACKSPACE)
-            clear_name.send_keys(new_name_card)
-            clear_name.send_keys(Keys.ENTER)
+            textarea = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog'] div.window-title >textarea")))
+            textarea.click()
+            textarea.send_keys(Keys.CONTROL, "a")
+            textarea.send_keys(Keys.BACKSPACE)
+
+            textarea.send_keys(new_name_card)
+
+            textarea.send_keys(Keys.ENTER)
 
         with allure.step("ui.Закрыть карточку"):
             card_close = self.__driver.find_element(By.CSS_SELECTOR, "button.js-close-window.dialog-close-button")
@@ -56,6 +59,7 @@ class CardPage:
 
     @allure.step("ui.Переместить карточку {id_card} в другой список {id_new_list}")
     def move_to_another_list(self, id_card, id_new_list):
+
         draggable = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
         droppable = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_new_list}"] ol.RD2CmKQFZKidd6')
         ActionChains(self.__driver)\
@@ -71,11 +75,11 @@ class CardPage:
         .move_to_element(hoverable)\
         .perform()
 
-        click_name_card = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
-        click_name_card.click()
+        name_card = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
+        name_card.click()
 
-        elem = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-archive-card")))
-        elem.click()
+        button_archive = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-archive-card")))
+        button_archive.click()
 
         elem = self.__driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-delete-card.negate")
         elem.click()
@@ -83,20 +87,7 @@ class CardPage:
         button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
         button2.click()
 
-        elem = self.__driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-archive-card")
-        elem.click()
 
-        elem = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-delete-card.negate")))
-        elem.click()
-
-        button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
-        button2.click()
-
-    def scroll_to_list(self, id_list):
-        iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
-        ActionChains(self.__driver)\
-            .scroll_to_element(iframe)\
-            .perform()
 
         
 

@@ -38,9 +38,6 @@ def test_create_new_list(browser: WebDriver, test_data: DataProvider, api_board:
     with allure.step("api.Проверить, что новый список - {name_new_list} есть на доске {name_board}"):
         assert find_list is True
 
-    # with allure.step("ui.Проверить, что новый список - {id_list} есть на доске"):
-    #     assert ui_list is True
-
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
 

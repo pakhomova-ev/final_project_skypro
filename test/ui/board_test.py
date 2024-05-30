@@ -31,11 +31,6 @@ def test_create_board(browser: WebDriver, test_data: DataProvider, api_board: Bo
     with allure.step("api.Проверяем, что в списке есть созданная доска"):
         assert name_find_after is True
 
-    # main_page.open_main_page_trello()
-    # # ++++++++++++++++==не работает, не находит элемент!!!!!!+++++++++++++++++++++++++++++++++++++++
-    # with allure.step("ui.Проверить, что созданная доска отображается в списке"):
-    #     name_find_ui = main_page.find_by_name(name_board)
-    #     assert name_find_ui is True
 
 def test_delete_board(browser: WebDriver, test_data: DataProvider, api_board: BoardApi):
     auth_page = AuthPage(browser)
@@ -62,9 +57,18 @@ def test_delete_board(browser: WebDriver, test_data: DataProvider, api_board: Bo
     with allure.step("Проверить, что кол-во досок стало на 1 меньше"):
         assert len_board_list_before - len_board_list_after == 1
 
+def find_board_test(browser,test_data: DataProvider, api_board: BoardApi):
+    auth_page = AuthPage(browser)
+    auth_page.go()
+    auth_page.login_as(test_data.get("email"), test_data.get("password"))
 
-@pytest.mark.skip("не работает поиск элемента в методе find_by_name")  
-def test_find_by_name(browser: WebDriver):
-    board_page = BoardPage(browser)
-    board_page.find_by_name()
+    new_board = api_board.create_board(DataProvider().get_create_creds())
+    name_board = new_board.get("name")
+
+    board_list = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+    
+
+    name_find = api_board.find_board_by_name_in_list(board_list, name_board)
+    
+    assert name_find is True
     

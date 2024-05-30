@@ -48,12 +48,13 @@ def test_create_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
-@allure.story("ui.Создать новую карточку")
+@allure.story("ui.Изменить имя карточки")
 def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list: ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
     board_page = BoardPage(browser)
     card_page = CardPage(browser)
+    list_page = ListPage(browser)
 
     auth_page.auth_user(test_data.get("email"), test_data.get("password"))
 
@@ -70,10 +71,22 @@ def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
     board_page.open_board_page(name_board, short_link)
 
     card_new = api_card.create_card(id_list, test_data.get_card_creds(id_list), test_data.get_json_header())
+    name_card = card_new.get("name")
     new_card_name = test_data.generate_card_name()
     
-    card_page.scroll_to_list(id_list)
-    card_page.update_name_card(card_new.get("name"), new_card_name)
+    list_page.scroll_list(id_list)
+    card_page.update_name_card(name_card, new_card_name)
+
+    card_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
+    find_card_with_new_name = api_card.find_card_by_name_in_list(card_list, new_card_name)
+    
+    with allure.step("api.Проверить, что карточка с новым именем - {name_card} - существует"):
+        assert find_card_with_new_name is True
+
+    not_find_card_with_old_name = api_card.find_card_by_name_in_list(card_list, name_card)
+
+    with allure.step("api.Проверить, что карточка со старым именем - {name_card} - не существует"):
+        assert not_find_card_with_old_name is False
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
@@ -109,13 +122,14 @@ def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api
  
     card_page.move_to_another_list(id_card, id_new_list)
 
-    find_card_true = api_card.find_card_by_id_in_list(list_2, id_card)
-    with allure.step("api.Проверить, что карточка есть в списке куда перемещали {id_new_list}"):
-        assert find_card_true is True
+    card_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
+    card_list_2 = api_card.get_cards_of_list(id_new_list, test_data.get_auth_creds(), test_data.get_json_header())
 
-    find_card_false = api_card.find_card_by_id_in_list(id_list, id_card)
+    with allure.step("api.Проверить, что карточка есть в списке куда перемещали {id_new_list}"):
+        assert api_card.find_id_card_by_name_in_list(card_list_2, name_card) == id_card
+
     with allure.step("api.Проверить, что карточки нет в первоначальном списке {id_list}"):
-        assert find_card_false is False
+        assert len(card_list) == 0
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
