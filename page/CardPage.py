@@ -65,8 +65,7 @@ class CardPage:
         
     @allure.step("ui.Удалить карточку")
     def delete_card(self, id_card):
-<<<<<<< HEAD
-        
+
         hoverable = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn')
         ActionChains(self.__driver)\
         .move_to_element(hoverable)\
@@ -75,34 +74,23 @@ class CardPage:
         click_name_card = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
         click_name_card.click()
 
-        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-archive-card")
+        elem = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-archive-card")))
         elem.click()
 
-        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-delete-card.negate")
-        elem.click()
-
-        button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
-        button2.click()
-=======
-        # hoverable = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn')
-        # ActionChains(self.__driver)\
-        # .move_to_element(hoverable)\
-        # .perform()
-
-        click_name_card = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
-        click_name_card.click()
->>>>>>> 2004f3c0cc867754b6d4af8a08719ef9843543cd
-
-        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-archive-card")
-        elem.click()
-
-        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-delete-card.negate")
+        elem = self.__driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-delete-card.negate")
         elem.click()
 
         button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
         button2.click()
-        # elem = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located(By.CSS_SELECTOR, 'div[data-testid="quick-card-editor-buttons"] > button[data-testid="quick-card-editor-archive"]'))
-        # elem.click()
+
+        elem = self.__driver.find_element(By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-archive-card")
+        elem.click()
+
+        elem = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='dialog'] > div.BXekJYFkPyovJz a.button-link.js-delete-card.negate")))
+        elem.click()
+
+        button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
+        button2.click()
 
 
 

@@ -15,7 +15,7 @@ from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 from selenium.webdriver.common.by import By
 
-@allure.story("ui.Создать новую карточку в листе")
+@allure.story("ui.Создать новую карточку в списке")
 def test_create_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list:ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
@@ -63,8 +63,6 @@ def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
     short_link = main_page.get_short_link(short_url)
     id_board = new_board_dict.get("id")
 
-    
-
     name_new_list = test_data.generate_new_list_name()
     list = api_list.create_new_list(name_new_list, id_board, test_data.get_auth_creds())
     id_list = list.get("id")
@@ -88,7 +86,6 @@ def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api
 
     auth_page.auth_user(test_data.get("email"), test_data.get("password"))
 
-
     name_board = DataProvider().generate_board_name()
     new_board_dict = api_board.create_board(test_data.get_create_creds_with_name(name_board))
     short_url = new_board_dict.get("shortUrl") # как бы это описать одной строчкой, спрятав все манипуляции 27-28
@@ -105,7 +102,6 @@ def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api
 
     board_page.open_board_page(name_board, short_link)
 
-
     name_card = test_data.generate_card_name()
     card_page.create_new_card(id_list, name_card)
     card_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
@@ -113,7 +109,7 @@ def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api
  
     card_page.move_to_another_list(id_card, id_new_list)
 
-    find_card_true = api_card.find_card_by_id_in_list(id_new_list, id_card)
+    find_card_true = api_card.find_card_by_id_in_list(list_2, id_card)
     with allure.step("api.Проверить, что карточка есть в списке куда перемещали {id_new_list}"):
         assert find_card_true is True
 

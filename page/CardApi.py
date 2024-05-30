@@ -60,7 +60,7 @@ class CardApi:
     def find_card_by_id_in_list(self, card_list: list, id_card: str) -> bool:
             new_id_list = []
             id_find = False
-            if len(card_list) > 0:
+            if len(card_list) <= 0:
                 for i in range(len(card_list)):
                     id = card_list[i].get("id")
                     new_id_list.append(id)
