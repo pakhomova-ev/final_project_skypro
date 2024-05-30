@@ -63,8 +63,25 @@ class CardPage:
         .pause(1)\
         .perform()
         
+    @allure.step("ui.Удалить карточку")
+    def delete_card(self, id_card):
+        
+        hoverable = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn')
+        ActionChains(self.__driver)\
+        .move_to_element(hoverable)\
+        .perform()
 
-      
+        click_name_card = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
+        click_name_card.click()
+
+        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-archive-card")
+        elem.click()
+
+        elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-delete-card.negate")
+        elem.click()
+
+        button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
+        button2.click()
 
     def scroll_to_list(self, id_list):
         iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
