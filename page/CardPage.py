@@ -92,20 +92,6 @@ class CardPage:
         button2 = WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")))
         button2.click()
 
-
-
-
-# def add_to_archive_card(self):
-#         elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-archive-card")
-#         elem.click()
-#         # div[data-testid="quick-card-editor-buttons"] >button[data-testid="quick-card-editor-archive"]
-
-#     def delete_card(self):
-#         elem = self.__driver.find_element(By.CSS_SELECTOR, "div.NauH5zhD2hZvpP.R6tO1m6fTtV8_6.DVtxDmkCMy5qRd a.button-link.js-delete-card.negate")
-#         elem.click()
-#         # WebDriverWait(self.__driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.pop-over is-shown")))
-#         elem2 = self.__driver.find_element(By.CSS_SELECTOR, "div.pop-over.is-shown input.js-confirm.full.nch-button--danger")
-#         elem2.click()
     def scroll_to_list(self, id_list):
         iframe = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_list}"]')
         ActionChains(self.__driver)\
