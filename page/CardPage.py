@@ -16,7 +16,7 @@ class CardPage:
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
 
-
+    @allure.step("ui.Создать новую карточку {name_card}  в списке id {id_list}")
     def create_new_card(self, id_list, name_card):
 
         with allure.step("ui.Нажать на кнопку Add a card"):
@@ -54,6 +54,14 @@ class CardPage:
             card_close = self.__driver.find_element(By.CSS_SELECTOR, "button.js-close-window.dialog-close-button")
             card_close.click()
 
+    @allure.step("ui.Переместить карточку {id_card} в другой список {id_new_list}")
+    def move_to_another_list(self, id_card, id_new_list):
+        draggable = self.__driver.find_element(By.CSS_SELECTOR, f'div.board-canvas div[data-card-id="{id_card}"] > div.amUfYqLTZOvGsn > a')
+        droppable = self.__driver.find_element(By.CSS_SELECTOR, f'li[data-list-id="{id_new_list}"] ol.RD2CmKQFZKidd6')
+        ActionChains(self.__driver)\
+        .drag_and_drop(draggable, droppable)\
+        .pause(1)\
+        .perform()
         
 
       

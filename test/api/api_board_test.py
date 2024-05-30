@@ -161,26 +161,27 @@ def test_update_card(api_client: BoardApi, test_data: DataProvider):
 
     find_card = api_client.find_x_by_id_in_list(card_list, id_new_card)
     assert find_card is False
-
+    
+# don't work
 @allure.story("Переместить карточку")
-def test_move_card(api_client: BoardApi, test_data: DataProvider):
+def test_move_card(api_board: BoardApi, test_data: DataProvider):
     # Создать доску -> id board
-    resp = api_client.create_board(test_data.get_create_creds())
+    resp = api_board.create_board(test_data.get_create_creds())
     id_new_board = resp.get("id")
     name_new_board = resp.get("name")
     # Создать 1 новый список не по умолчанию -> id lists
-    list_board_lists = api_client.get_list_boards_lists(id_new_board, test_data.get_auth_creds(), test_data.get_json_header())
+    list_board_lists = api_board.get_list_boards_lists(id_new_board, test_data.get_auth_creds(), test_data.get_json_header())
     id_list = list_board_lists[0].get("id")
     name_new_list = test_data.generate_new_list_name()
-    new_list = api_client.create_new_list(name_new_list, id_new_board, test_data.get_auth_creds())
+    new_list = api_board.create_new_list(name_new_list, id_new_board, test_data.get_auth_creds())
     id_list_not_default = new_list.get("id")
 
     # Создаем карточку в списке по умолчанию -> id card
     card_creds = test_data.get_card_creds(id_list)
-    new_card = api_client.create_card(card_creds, test_data.get_json_header())
+    new_card = api_board.create_card(card_creds, test_data.get_json_header())
     id_new_card = new_card.get("id")
     # Перемещаем карточку в список не по умолчанию
-    move_new_list = api_client.update_list_of_card(
+    move_new_list = api_board.update_list_of_card(
         test_data.get_auth_creds(), 
         test_data.get_json_header(), 
         id_list_not_default, 
@@ -189,9 +190,9 @@ def test_move_card(api_client: BoardApi, test_data: DataProvider):
     # Проверить, что карточка в нужном списке
     assert id_new_list == id_list_not_default
     # Проверить, что в старом списке нет перемещенной карточки
-    list_cards_after = api_client.get_cards_of_list(test_data.get_auth_creds(), 
+    list_cards_after = api_board.get_cards_of_list(test_data.get_auth_creds(), 
         test_data.get_json_header(),id_list)
-    find_card = api_client.find_x_by_id_in_list(list_cards_after, id_new_card)
+    find_card = api_board.find_x_by_id_in_list(list_cards_after, id_new_card)
     assert find_card is False
 
 
