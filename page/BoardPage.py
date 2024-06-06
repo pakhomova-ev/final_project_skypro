@@ -1,21 +1,23 @@
 import allure
+import time
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver 
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ActionChains
 
 from configuration.ConfigProvider import ConfigProvider
 from testdata.DataProvider import DataProvider
 
 class BoardPage:
 
-    # https://trello.com/b/KjaoiGyt/rte
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
         self.url = ConfigProvider().get("ui", "base_url")
     
     @allure.step("ui.Перейти на страницу доски")
-    def open_board_page(self, name_board,short_link):
+    def open_board_page(self, name_board: str, short_link:str):
         self.__url = self.url + f'/b/{short_link}/{name_board}'
         self.__driver.get(self.__url)
 
@@ -51,12 +53,3 @@ class BoardPage:
 
         self.__driver.find_element(By.CSS_SELECTOR, "textarea[data-testid='list-name-textarea']").send_keys(name_list)
         self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='list-composer-add-list-button']").click()
-
-
-
-    # div.content-all-boards > div > div >div.boards-page-board-section.mod-no-sidebar >div > ul.boards-page-board-section-list > li > a >div > div[title="against"] 
-    
-
-
-
-        
