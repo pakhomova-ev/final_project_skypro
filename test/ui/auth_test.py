@@ -1,11 +1,10 @@
 import allure
 
 from page.AuthPage import AuthPage
-from page.BoardApi import BoardApi
 from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 
-
+@allure.story("Вход в аккаунт")
 def auth_test(browser,test_data: DataProvider):
     email = test_data.get("email")
     password = test_data.get("password")
