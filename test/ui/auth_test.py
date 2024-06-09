@@ -4,7 +4,10 @@ from page.AuthPage import AuthPage
 from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 
-@allure.story("Вход в аккаунт")
+@allure.story("Залогиниться сайте")
+@allure.severity("allure.severity_level.BLOCKED")
+@allure.feature("Регистрация/Вход")
+@allure.tag("Positive")
 def auth_test(browser,test_data: DataProvider):
     email = test_data.get("email")
     password = test_data.get("password")

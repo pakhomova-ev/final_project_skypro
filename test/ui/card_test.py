@@ -15,7 +15,7 @@ from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 from selenium.webdriver.common.by import By
 
-@allure.story("ui.Создать новую карточку в списке")
+@allure.story("Создать карточку")
 def test_create_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list:ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
