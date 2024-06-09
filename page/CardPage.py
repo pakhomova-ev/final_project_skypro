@@ -25,7 +25,7 @@ class CardPage:
         
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "textarea[data-testid='list-card-composer-textarea']")))
         
-        with allure.step("ui.Ввести имя новой карточки {name_card}"):
+        with allure.step("ui.Ввести имя новой карточки"):
             type_name = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR,  f'li[data-list-id="{id_list}"] form textarea[data-testid="list-card-composer-textarea"]')))
             type_name.send_keys(name_card)
         
@@ -43,7 +43,7 @@ class CardPage:
             name_click = WebDriverWait(self.__driver, 10).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="board"]//a[contains(text(), "{name_card}")]')))
             name_click.click()
 
-        with allure.step("ui.Стереть имя карточки {name_card} и ввести новое имя {new_name_card}"):
+        with allure.step("ui.Стереть имя карточки и ввести новое имя"):
             textarea = WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.ySQIVFZtJ_1G5J.QIUmf9rrTzMUV2 div[role='dialog'] div.window-title >textarea")))
             textarea.click()
             textarea.send_keys(Keys.CONTROL, "a")

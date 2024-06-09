@@ -21,3 +21,16 @@ class BasePage:
     @allure.step("Дождаться когда элемент будет виден")
     def is_visible(self, locator)-> WebElement:
         return self.wait.until(EC.visibility_of_element_located(locator))
+    
+    def find_x_in_list(self, x_list: list, x_id: str) ->bool:
+        new_id_list = []
+        for item in x_list:
+            if "id" in item:
+                new_id_list.append(item["id"])
+        
+        id_find = False
+        for elem in new_id_list:
+            if elem == x_id:
+                id_find = True
+        
+        return id_find

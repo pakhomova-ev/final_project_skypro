@@ -12,7 +12,7 @@ class CardApi:
 
     
     # https://api.trello.com/1/cards?idList=5abbe4b7ddc1b351ef961414&key=APIKey&token=APIToken
-    @allure.step("api.Создать новую карточку")
+    @allure.step("api.Создать карточку")
     def create_card(self, id_list: str, card_creds: dict, json_header: dict):
         card_creds["idList"]= id_list
         path = "{trello}/cards".format(trello = self.base_url)
@@ -21,7 +21,7 @@ class CardApi:
     
     # --url 'https://api.trello.com/1/lists/{id}/cards?key=APIKey&token=APIToken' \
     # --header 'Accept: application/json'
-    @allure.step("api.получить список карточек листа {id_list}")
+    @allure.step("api.Получить список карточек листа {id_list}")
     def get_cards_of_list(self, id_list: str, auth_creds: dict, json_header:dict) -> list[dict]:
         path = "{trello}/lists/{id_list}/cards".format(trello = self.base_url, id_list=id_list)
         resp = requests.get(path, params=auth_creds, headers=json_header)
@@ -29,14 +29,37 @@ class CardApi:
         
     #url = "https://api.trello.com/1/cards/{id}"
     @allure.step("api.Изменить карточку id - {id_card}, name - {name}")
-    def update_card(self, name:str, id_card: str, auth_creds: dict, json_header: dict) -> list[dict]:
+    def change_name_card(self, name:str, id_card: str, auth_creds: dict, json_header: dict) -> list[dict]:
         path = "{trello}/cards/{id}".format(trello = self.base_url, id = id_card)
-        auth_creds["name"] = name
-        resp = requests.put(path, params=auth_creds, headers=json_header)
+        body = {
+             "name": name
+        }
+        resp = requests.put(path, json=body, params=auth_creds, headers=json_header)
         return resp.json()
     
+# --url 'https://api.trello.com/1/cards/{id}?key=APIKey&token=APIToken' \
+# --header 'Accept: application/json'
+    @allure.step("api.Переместить картотчку в другой список")
+    def move_card_another_list(self, id_card: str, new_id_list: str, auth_creds: dict, json_header: dict) -> list[dict]:
+        path = "{trello}/cards/{id}".format(trello = self.base_url, id = id_card)
+        body = {
+             "idList": new_id_list
+        }
+        resp = requests.put(path, json=body, params=auth_creds, headers=json_header)
+        return resp.json()
+    
+# curl --request DELETE \
+# --url 'https://api.trello.com/1/cards/{id}?key=APIKey&token=APIToken'
+    @allure.step("api.Удалить карточку")
+    def delete_card(self, id_card: str, auth_creds: dict):
+        path = "{trello}/cards/{id}".format(trello = self.base_url, id = id_card)
+        resp = requests.delete(path, params=auth_creds)
+        return resp.json()
 
-    @allure.step("api.Проверить есть ли картчка с таким именем - {name_card} - существует в списке")
+         
+         
+
+    @allure.step("api.Проверить, что карточка существует в списке")
     def find_card_by_name_in_list(self, card_list: list, name_card: str) -> bool:
             new_name_list = []
             for i in range(len(card_list)):
@@ -46,7 +69,6 @@ class CardApi:
             for elem in new_name_list:
                 if(elem == name_card):
                     name_find = True
-                else: name_find = False
             return name_find
     
     def find_id_card_by_name_in_list(self, card_list: list, name: str) -> str:
@@ -67,8 +89,6 @@ class CardApi:
                 for elem in new_id_list:
                     if(elem == id_card):
                         id_find = True
-                    else: id_find = False
-            else: id_find = False
             return id_find
 
 

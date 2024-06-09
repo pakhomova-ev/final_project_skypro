@@ -8,9 +8,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
 
 from configuration.ConfigProvider import ConfigProvider
+from page.BasePage import BasePage
 from testdata.DataProvider import DataProvider
 
-class BoardPage:
+class BoardPage(BasePage):
 
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
@@ -22,7 +23,7 @@ class BoardPage:
         self.__driver.get(self.__url)
 
 
-    @allure.step("ui.удалить доску")
+    @allure.step("ui.Удалить доску")
     def delete_board(self):
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div.RPO6eTW4FLJhI0")))
         self.__driver.find_element(By.CSS_SELECTOR, "button.frrHNIWnTojsww.GDunJzzgFqQY_3 span[data-testid='OverflowMenuHorizontalIcon']").click()
@@ -39,7 +40,7 @@ class BoardPage:
         WebDriverWait(self.__driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "section.rX4pAv5sWHFNjp")))
         self.__driver.find_element(By.CSS_SELECTOR, "button[data-testid='close-board-delete-board-confirm-button']").click()
 
-    @allure.step("ui.Создать новую доску")
+    @allure.step("ui.Создать доску")
     def create_new_board(self):
         self.__driver.find_element(By.CSS_SELECTOR, "li[data-testid='create-board-tile']").click()
 

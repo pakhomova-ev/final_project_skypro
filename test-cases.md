@@ -99,3 +99,36 @@ allure open allure/final
   </ol>
 
   
+         
+ 
+@allure.step("Проверить есть ли доска")
+def test_find_name(api_board: BoardApi, test_data: DataProvider):
+    new_board_creds = test_data.get_create_creds()
+    name_board = new_board_creds.get("name")
+    resp = api_board.create_board(new_board_creds)
+    id_new_board = resp.get("id")
+    list_boards = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+    
+    name_find_after = api_board.find_board_by_name_in_list(list_boards, name_board)
+    with allure.step("Проверяем, что в списке есть созданная доска"):
+        assert name_find_after is True
+
+    api_board.delete_board_by_id(id_new_board, test_data.get_auth_creds())
+    
+@allure.step("Получить списки доски")
+def test_get_list_board_list(api_board: BoardApi, test_data: DataProvider):
+    new_board_creds = test_data.get_create_creds()
+    resp = api_board.create_board(new_board_creds)
+    id_new_board = resp.get("id")
+
+    list_lists = api_board.get_list_boards_lists(id_new_board, test_data.get_auth_creds(), test_data.get_json_header())
+    with allure.step("api.Проверить, что лист To Do есть в списке"):
+        assert list_lists[0]["name"] == "To Do"
+    with allure.step("api.Проверить, что лист Doing есть в списке"):
+        assert list_lists[1]["name"] == "Doing"
+    with allure.step("api.Проверить, что лист Done есть в списке"):
+        assert list_lists[2]["name"] == "Done"
+
+    api_board.delete_board_by_id(id_new_board, test_data.get_auth_creds())
+
+
