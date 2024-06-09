@@ -38,3 +38,7 @@ class AuthPage:
         Метод возвращает адрес стекущей страницы
         """
         return self.__driver.current_url
+    
+    def auth_user(self, email: str, password: str):
+        self.go()
+        self.login_as(email, password)
