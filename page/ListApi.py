@@ -17,11 +17,17 @@ class ListApi:
         auth_creds["idBoard"]= id_board
         resp = requests.post(path, params=auth_creds)
         return resp.json()
+    
+    @allure.step("Найти список по id - {id_list}")
+    def find_list_by_id_in_list(self, lists_list: list, id_list: str) -> bool:
+            new_id_list = []
+            for i in range(len(lists_list)):
+                id = lists_list[i].get("id")
+                new_id_list.append(id)
+            id_find = False
+            for elem in new_id_list:
+                if(elem == id_list):
+                    id_find = True
+            return id_find
 
-    @allure.step("api.Получить id списка по имени {name_list}")
-    def get_list_id_by_name(self, list_lists: dict, name_list: str):
-        id_list = ''
-        for i in range(len(list_lists)):
-            if(list_lists[i].get("name") == name_list):
-                id_list = list_lists[i].get("id")
-        return id_list
+   

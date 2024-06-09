@@ -2,7 +2,7 @@ import allure
 import time
 
 from selenium.webdriver.chrome.webdriver import WebDriver
-
+from page.BasePage import BasePage
 from page.AuthPage import AuthPage
 from page.BoardApi import BoardApi
 from page.BoardPage import BoardPage
@@ -15,7 +15,11 @@ from page.MainPage import MainPage
 from testdata.DataProvider import DataProvider
 from selenium.webdriver.common.by import By
 
-@allure.story("ui.Создать новую карточку в списке")
+@allure.epic("UI")
+@allure.feature("Карточки")
+@allure.story("Создать карточку")
+@allure.severity("allure.severity_level.BLOCKED")
+@allure.tag("Positive")
 def test_create_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list:ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
@@ -43,12 +47,17 @@ def test_create_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
 
     cards_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
     
-    with allure.step("api.Проверить, что карточка {name_card} существует"):
+    with allure.step("api.Проверить, что новая карточка существует"):
         assert api_card.find_card_by_name_in_list(cards_list, name_card) is True
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
-@allure.story("ui.Изменить имя карточки")
+@allure.epic("UI")
+@allure.feature("Карточки")
+@allure.story("Изменить карточку")
+@allure.severity("allure.severity_level.NORMAL")
+@allure.tag("Positive")
+@allure.title("Изменить имя карточки")
 def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list: ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
@@ -70,7 +79,8 @@ def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
 
     board_page.open_board_page(name_board, short_link)
 
-    card_new = api_card.create_card(id_list, test_data.get_card_creds(id_list), test_data.get_json_header())
+    name_card = test_data.generate_card_name()
+    card_new = api_card.create_card(id_list, test_data.get_card_creds(id_list, name_card), test_data.get_json_header())
     name_card = card_new.get("name")
     new_card_name = test_data.generate_card_name()
     
@@ -80,17 +90,22 @@ def test_update_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
     card_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
     find_card_with_new_name = api_card.find_card_by_name_in_list(card_list, new_card_name)
     
-    with allure.step("api.Проверить, что карточка с новым именем - {name_card} - существует"):
+    with allure.step("api.Проверить, что карточка с новым именем существует"):
         assert find_card_with_new_name is True
 
     not_find_card_with_old_name = api_card.find_card_by_name_in_list(card_list, name_card)
 
-    with allure.step("api.Проверить, что карточка со старым именем - {name_card} - не существует"):
+    with allure.step("api.Проверить, что карточка со старым именем не существует"):
         assert not_find_card_with_old_name is False
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
-@allure.story("ui.Переместить карточку в другой список")
+@allure.epic("UI")
+@allure.feature("Карточки")
+@allure.story("Переместить карточку")
+@allure.severity("allure.severity_level.NORMAL")
+@allure.tag("Positive")
+@allure.title("Переместить карточку в другой список")
 def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list: ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
@@ -125,16 +140,19 @@ def test_move_card_another_list(browser: WebDriver, test_data: DataProvider, api
     card_list = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
     card_list_2 = api_card.get_cards_of_list(id_new_list, test_data.get_auth_creds(), test_data.get_json_header())
 
-    with allure.step("api.Проверить, что карточка есть в списке куда перемещали {id_new_list}"):
+    with allure.step("api.Проверить, что карточка есть в списке, в который перемещена карточка"):
         assert api_card.find_id_card_by_name_in_list(card_list_2, name_card) == id_card
 
-    with allure.step("api.Проверить, что карточки нет в первоначальном списке {id_list}"):
+    with allure.step("api.Проверить, что карточки нет в первоначальном списке"):
         assert len(card_list) == 0
 
     api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
-
-@allure.story("ui.Удаление карточки")
+@allure.epic("UI")
+@allure.feature("Карточки")
+@allure.story("Удалить карточку")
+@allure.severity("allure.severity_level.NORMAL")
+@allure.tag("Positive")
 def test_delete_card(browser: WebDriver, test_data: DataProvider, api_board: BoardApi, api_card: CardApi, api_list: ListApi):
     auth_page = AuthPage(browser)
     main_page = MainPage(browser)
@@ -165,10 +183,10 @@ def test_delete_card(browser: WebDriver, test_data: DataProvider, api_board: Boa
     card_list_after = api_card.get_cards_of_list(id_list, test_data.get_auth_creds(), test_data.get_json_header())
 
     find_card_false = api_card.find_card_by_id_in_list(card_list_after, id_card)
-    with allure.step("api.Проверить, что карточки нет в списке {id_list}"):
+    with allure.step("api.Проверить, что карточки нет в списке"):
         assert find_card_false is False
 
-
+    api_board.delete_board_by_id(id_board, test_data.get_auth_creds())
 
 
 

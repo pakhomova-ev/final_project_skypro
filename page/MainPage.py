@@ -7,9 +7,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from configuration.ConfigProvider import ConfigProvider
+from page.BasePage import BasePage
 from testdata.DataProvider import DataProvider
 
-class MainPage:
+class MainPage(BasePage):
 
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver

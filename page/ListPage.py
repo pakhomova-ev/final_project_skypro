@@ -7,12 +7,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
 
 from configuration.ConfigProvider import ConfigProvider
+from page.BasePage import BasePage
 from testdata.DataProvider import DataProvider
 
 button_add_new_list = "button[data-testid='list-composer-button']"
 
 
-class ListPage:
+class ListPage(BasePage):
 
     def __init__(self, driver: WebDriver) -> None:
         self.__driver = driver
