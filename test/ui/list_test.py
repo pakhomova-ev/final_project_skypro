@@ -27,7 +27,7 @@ def test_create_new_list(browser: WebDriver, test_data: DataProvider, api_board:
     auth_page.login_as(test_data.get("email"), test_data.get("password"))
 
     name_board = DataProvider().generate_board_name()
-    new_board_dict = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    new_board_dict = api_board.create_board(name_board, test_data.get_auth_creds())
     short_url = new_board_dict.get("shortUrl") # как бы это описать одной строчкой, спрятав все манипуляции 27-28
     short_link = main_page.get_short_link(short_url)
     id_board = new_board_dict.get("id")
