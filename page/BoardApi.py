@@ -20,13 +20,15 @@ class BoardApi:
         return resp.json()
     
     @allure.step("api.Создать новую доску")
-    def create_board(self, create_creds: dict) -> dict:
+    def create_board(self, name_board: str, auth_creds: dict) -> dict:
         """
         Метод создает новую доску
         """
-        
+        body = {
+            "name":name_board
+        }
         path = "{trello}/boards/".format(trello = self.base_url)
-        resp = requests.post(path, params=create_creds)
+        resp = requests.post(path, json=body, params=auth_creds)
 
         return resp.json()
     
@@ -68,15 +70,10 @@ class BoardApi:
     
     @allure.step("Проверить есть ли доска с таким именем - {name_board}")
     def find_board_by_name_in_list(self, boards_list: list, name_board: str) -> bool:
-            new_name_list = []
-            for i in range(len(boards_list)):
-                 name = boards_list[i].get("name")
-                 new_name_list.append(name)
             name_find = False
-            for elem in new_name_list:
-                if(elem == name_board):
+            for board in boards_list:
+                if board.get("name") == name_board:
                     name_find = True
-                else: name_find = False
             return name_find
 
     @allure.step("api.Удалить все доски организации")

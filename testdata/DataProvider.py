@@ -68,4 +68,9 @@ class DataProvider:
         fake = Faker()
         new_list_name = f'{fake.color_name()} {str(fake.pyint(max_value = 5673))}'
         return new_list_name
+    
+    def generate_board_name_max_char(self):
+        fake=Faker()
+        big_board_name = fake.pystr(max_chars=16384)
+        return big_board_name
         

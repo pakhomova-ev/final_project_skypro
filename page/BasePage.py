@@ -14,7 +14,7 @@ class BasePage:
    
     def get_current_url(self) -> str:
         """
-        Метод возвращает адрес стекущей страницы
+        Метод возвращает адрес текущей страницы
         """
         return self.__driver.current_url
     
@@ -34,3 +34,10 @@ class BasePage:
                 id_find = True
         
         return id_find
+    
+    def find_x_by_name_in_list(self, x_list: list, name_x: str) ->bool:
+            name_find = False
+            for x in x_list:
+                if x.get("name") == name_x:
+                    name_find = True
+            return name_find

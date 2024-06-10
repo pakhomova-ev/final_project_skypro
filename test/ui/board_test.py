@@ -51,7 +51,7 @@ def test_delete_board(browser: WebDriver, test_data: DataProvider, api_board: Bo
     board_page = BoardPage(browser)
     main_page = MainPage(browser)
     name_board = test_data.generate_board_name()
-    new_board_dict = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    new_board_dict = api_board.create_board(name_board, test_data.get_auth_creds())
     short_url = new_board_dict["shortUrl"]
     short_link = main_page.get_short_link(short_url)
 

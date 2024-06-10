@@ -1,4 +1,5 @@
 import allure
+import pytest
 from page.BoardApi import BoardApi
 from testdata.DataProvider import DataProvider
 
@@ -8,8 +9,9 @@ from testdata.DataProvider import DataProvider
 @allure.severity("allure.severity_level.NORMAL")
 @allure.tag("Positive")
 def test_get_boards(api_board: BoardApi, test_data: DataProvider):
+
     name_board = test_data.generate_board_name()
-    resp = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    resp = api_board.create_board(name_board, test_data.get_auth_creds())
     with allure.step("Получить id созданной доски"):
         id_new_board = resp.get("id")
 
@@ -24,15 +26,14 @@ def test_get_boards(api_board: BoardApi, test_data: DataProvider):
 @allure.story("Создать доску")
 @allure.severity("allure.severity_level.BLOCKED")
 @allure.tag("Positive")
+@allure.tag("smoke")
 def test_create_board(api_board: BoardApi, test_data: DataProvider):
     with allure.step("Получить кол-во досок до создания новой доски"):
         board_list_before = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
 
     name_board = test_data.generate_board_name()
-    new_board_creds = test_data.get_create_creds_with_name(name_board)
-    name_new_board_creds = new_board_creds.get("name")
 
-    resp = api_board.create_board(new_board_creds)
+    resp = api_board.create_board(name_board, test_data.get_auth_creds())
     name_new_board = resp.get("name")
     id_new_board = resp.get("id")
 
@@ -42,7 +43,58 @@ def test_create_board(api_board: BoardApi, test_data: DataProvider):
         assert len(board_list_after) - len(board_list_before) == 1
 
     with allure.step('Проверить, что имя новой доски верное'):
-        assert name_new_board_creds == name_new_board
+        assert name_board == name_new_board
+  
+    api_board.delete_board_by_id(id_new_board, test_data.get_auth_creds())
+
+@pytest.mark.parametrize("name_board", ["e", "#", "56", "TY-54 GHQ!", "Ё", "вопрос?"])
+@allure.epic("API")
+@allure.feature("Доски")
+@allure.story("Создать доску")
+@allure.severity("allure.severity_level.BLOCKED")
+@allure.tag("Positive")
+def test_create_board_with_name(name_board: str, api_board: BoardApi, test_data: DataProvider):
+    with allure.step("Получить кол-во досок до создания новой доски"):
+        board_list_before = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+
+    resp = api_board.create_board(name_board, test_data.get_auth_creds())
+    name_new_board = resp.get("name")
+    id_new_board = resp.get("id")
+
+    with allure.step("Получить кол-во досок после создания новой доски"):
+        board_list_after = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+
+    with allure.step("Проверить, что досок стало на 1 больше"):
+        assert len(board_list_after) - len(board_list_before) == 1
+
+    with allure.step('Проверить, что имя новой доски верное'):
+        assert name_board == name_new_board
+  
+    api_board.delete_board_by_id(id_new_board, test_data.get_auth_creds())
+
+@allure.epic("API")
+@allure.feature("Доски")
+@allure.story("Создать доску")
+@allure.severity("allure.severity_level.BLOCKED")
+@allure.tag("Positive")
+@allure.title("Создать доску с максимальным кол-во символов в названии доски")
+def test_create_board_max_char_name(api_board: BoardApi, test_data: DataProvider):
+    with allure.step("Получить кол-во досок до создания новой доски"):
+        board_list_before = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+
+    name_board = test_data.generate_board_name_max_char()
+
+    resp = api_board.create_board(name_board, test_data.get_auth_creds())
+    name_new_board = resp.get("name")
+    id_new_board = resp.get("id")
+
+    with allure.step("Получить кол-во досок после создания новой доски"):
+        board_list_after = api_board.get_all_boards_by_org_id(test_data.get("org_id"), test_data.get_auth_creds())
+    with allure.step("Проверить, что досок стало на 1 больше"):
+        assert len(board_list_after) - len(board_list_before) == 1
+
+    with allure.step('Проверить, что имя новой доски верное'):
+        assert name_board == name_new_board
   
     api_board.delete_board_by_id(id_new_board, test_data.get_auth_creds())
 
@@ -53,8 +105,8 @@ def test_create_board(api_board: BoardApi, test_data: DataProvider):
 @allure.tag("Positive")
 def test_delete_board_by_id(api_board: BoardApi, test_data: DataProvider):
     name_board = test_data.generate_board_name()
-    new_board_creds = test_data.get_create_creds_with_name(name_board)
-    resp = api_board.create_board(new_board_creds)
+  
+    resp = api_board.create_board(name_board, test_data.get_auth_creds())
 
     with allure.step("Получить id созданной доски"):
         id_new_board = resp.get("id")

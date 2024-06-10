@@ -13,7 +13,7 @@ from testdata.DataProvider import DataProvider
 def test_create_card(api_board: BoardApi, api_list: ListApi, api_card: CardApi,test_data: DataProvider):
     name_board = test_data.generate_board_name()
     
-    resp_board = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    resp_board = api_board.create_board(name_board, test_data.get_auth_creds())
     id_board = resp_board.get("id")
 
     name_list = test_data.generate_new_list_name()
@@ -39,7 +39,7 @@ def test_create_card(api_board: BoardApi, api_list: ListApi, api_card: CardApi,t
 @allure.tag("Positive")
 def test_change_name_card(api_board: BoardApi, api_list: ListApi, api_card: CardApi,test_data: DataProvider):
     name_board = test_data.generate_board_name()
-    resp_board = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    resp_board = api_board.create_board(name_board, test_data.get_auth_creds())
     id_board = resp_board.get("id")
 
     name_list = test_data.generate_new_list_name()
@@ -74,7 +74,7 @@ def test_change_name_card(api_board: BoardApi, api_list: ListApi, api_card: Card
 @allure.tag("Positive")
 def test_move_card_another_list(api_board: BoardApi, api_list: ListApi, api_card: CardApi,test_data: DataProvider):
     name_board = test_data.generate_board_name()
-    resp_board = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    resp_board = api_board.create_board(name_board, test_data.get_auth_creds())
     id_board = resp_board.get("id")
 
     name_list = test_data.generate_new_list_name()
@@ -111,7 +111,7 @@ def test_move_card_another_list(api_board: BoardApi, api_list: ListApi, api_card
 @allure.tag("Positive")
 def test_delete_card(api_board: BoardApi, api_list: ListApi, api_card: CardApi,test_data: DataProvider):
     name_board = test_data.generate_board_name()
-    resp_board = api_board.create_board(test_data.get_create_creds_with_name(name_board))
+    resp_board = api_board.create_board(name_board, test_data.get_auth_creds())
     id_board = resp_board.get("id")
 
     name_list = test_data.generate_new_list_name()
